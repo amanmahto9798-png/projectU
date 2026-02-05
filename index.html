@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cute Bear Story</title>
+
+<style>
+/* ---------- RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Comic Sans MS", "Poppins", cursive;
+}
+
+body {
+  overflow: hidden;
+}
+
+/* ---------- COMMON ---------- */
+.page {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page.active {
+  display: flex;
+}
+
+/* ---------- PAGE 1 ---------- */
+#page1 {
+  background: url("images/sunflower-bg.png") center/cover no-repeat;
+}
+
+.bear-entry {
+  width: 180px;
+  position: absolute;
+  right: -220px;
+  animation: slideIn 2.5s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+  to {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+.entry-box {
+  margin-top: 220px;
+  background: rgba(255,255,255,0.85);
+  padding: 16px 22px;
+  border-radius: 22px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 2.5s;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.btn {
+  margin-top: 12px;
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: none;
+  background: #ffb6c1;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* ---------- PAGE 2 ---------- */
+#page2 {
+  background: url("images/sky-bg.png") center/cover no-repeat;
+}
+
+.balloon-area {
+  position: absolute;
+  inset: 0;
+}
+
+.balloon {
+  width: 70px;
+  height: 90px;
+  border-radius: 50% 50% 45% 45%;
+  position: absolute;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.burst {
+  animation: burst .4s ease forwards;
+}
+
+@keyframes burst {
+  to { transform: scale(1.6); opacity: 0; }
+}
+
+.message {
+  position: absolute;
+  max-width: 220px;
+  background: white;
+  padding: 10px 14px;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  font-size: .9rem;
+}
+
+/* PAGE 2 – CENTER BEAR (MOVED TO RIGHT SIDE AS MARKED) */
+.sticker-center {
+  width: 150px;
+  position: absolute;
+  top: 220px;        /* adjust up/down if needed */
+  left: 62%;         /* 👉 moves it to the right */
+  transform: translateX(-50%);
+}
+
+
+
+.sticker-right {
+  width: 120px;
+  position: absolute;
+  right: 20px;
+  top: 100px;
+}
+
+.bottom-text {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(255,255,255,0.7);
+  padding: 6px 14px;
+  border-radius: 15px;
+}
+
+/* PAGE 2 – NEXT BUTTON POSITION */
+.next-btn {
+  position: absolute;
+  bottom: 40px;     /* near bottom */
+  right: 40px;      /* right side */
+  display: none;    /* stays hidden until balloons finish */
+  z-index: 5;
+}
+
+
+/* ---------- PAGE 3 ---------- */
+#page3 {
+  background: url("images/night-bg.png") center/cover no-repeat;
+  color: white;
+}
+
+.lyrics {
+  text-align: center;
+  max-width: 90%;
+}
+
+.lyrics p {
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp 1.5s ease forwards;
+}
+
+.lyrics p:nth-child(1){animation-delay:.3s}
+.lyrics p:nth-child(2){animation-delay:.8s}
+.lyrics p:nth-child(3){animation-delay:1.3s}
+.lyrics p:nth-child(4){animation-delay:1.8s}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bears-together {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.bears-together img {
+  width: 120px;
+}
+
+.bottom-msg {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+
+  color: #ff8fb8;              /* 💗 soft, readable pink */
+  font-size: 1.05rem;
+  font-weight: 600;            /* ✔️ little bold, not heavy */
+
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    0 0 8px rgba(255, 143, 184, 0.45); /* gentle glow */
+}
+
+/* ================= PAGE 3 VIDEO SAFE ZONE ================= */
+#sky-video-box {
+  position: absolute;
+  top: 120px;
+  right: 80px;
+
+  width: 300px;
+  height: 170px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 2;              /* below text & bears */
+}
+
+#sky-video-box video {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  box-shadow: 0 0 28px rgba(255, 180, 220, 0.6);
+  animation: videoFadeIn 0.4s ease;
+}
+
+@keyframes videoFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ================= CRACKER BUTTONS ================= */
+.cracker-buttons {
+  position: absolute;
+  bottom: 40px;
+  right: 80px;
+
+  display: flex;
+  gap: 16px;
+  z-index: 5;
+}
+
+.cracker {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+
+  background: radial-gradient(circle at top, #ffd6e8, #ff8fb8);
+  box-shadow: 0 0 12px rgba(255, 143, 184, 0.6);
+
+  cursor: pointer;
+  animation: floatCracker 2s ease-in-out infinite;
+}
+
+@keyframes floatCracker {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-6px); }
+}
+
+/* burst feedback */
+.cracker.burst {
+  animation: burst 0.35s ease;
+}
+
+@keyframes burst {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.6); box-shadow: 0 0 30px #fff; }
+  100% { transform: scale(1); }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+  <img src="images/bear-page1.png" class="bear-entry" alt="bear">
+  <div class="entry-box">
+    Come inside with a smile 😊
+    <br>
+    <button class="btn" onclick="goToPage(2)">Yes</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <div class="balloon-area" id="balloonArea"></div>
+
+  <img src="images/bear-page2-center.png" class="sticker-center" alt="bear">
+  <img src="images/bear-page2-right.png" class="sticker-right" alt="bear">
+
+  <div class="bottom-text">moti moti 👀</div>
+  <button class="btn next-btn" id="nextBtn" onclick="goToPage(3)">
+    aage jaao →
+  </button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+  <div class="lyrics">
+    <p>Dukh hove🥹 sukh hove tu si mere🫂 naal yaara</p>
+    <p>Apni yari nu ho gaye dekh kitne saal yaara💕</p>
+    <p>Kini kamaal yaara😇 tu bhi mere naal yaara</p>
+    <p>Main bhi tere naal yaara</p>
+  </div>
+
+  <div class="bears-together">
+    <img src="images/bear-page3-left.png" alt="bear">
+    <img src="images/bear-page3-right.png" alt="bear">
+  </div>
+
+  <div class="bottom-msg">
+    ~ jaldi thik ho jaa moti fir fight karenge sath mai<br>
+    few peoples matter to me but they matter to much to me <br>
+    tukur tukur🫣smile ker le 
+  </div>
+  <!-- SKY VIDEO SAFE AREA -->
+<div id="sky-video-box"></div>
+
+<!-- CRACKER STYLE BUTTONS -->
+<div class="cracker-buttons">
+  <div class="cracker" data-video="videos/video1.mp4"></div>
+  <div class="cracker" data-video="videos/video2.mp4"></div>
+  <div class="cracker" data-video="videos/video3.mp4"></div>
+  <div class="cracker" data-video="videos/video4.mp4"></div>
+</div>
+
+</div>
+
+<script>
+function goToPage(n) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page" + n).classList.add("active");
+}
+
+/* BALLOONS */
+const balloons = [
+  ["red","smile😊"],
+  ["green","oye buddhu you are important"],
+  ["yellow","hello ji"],
+  ["orange","muskurao🤗"],
+  ["blue","ye smile toh bahot aachi hai jara fir se smile kerna"],
+  ["purple","hein 😁"],
+  ["skyblue","aaise dekho ge toh photo click ker lunga😏"],
+  ["pink","khush raho, hasso muskurao, life yahi hai haste hue jee lo"],
+  ["lightgreen","chai piyegi chai, peena bhi nhi werna dishum dihum"]
+];
+
+let popped = 0;
+const area = document.getElementById("balloonArea");
+
+balloons.forEach((b,i)=>{
+  const bal = document.createElement("div");
+  bal.className = "balloon";
+  bal.style.background = b[0];
+  bal.style.left = 10 + (i%3)*30 + "%";
+  bal.style.top = 15 + Math.floor(i/3)*25 + "%";
+
+  bal.onclick = ()=>{
+    bal.classList.add("burst");
+
+    setTimeout(()=>bal.remove(),300);
+
+    const msg = document.createElement("div");
+    msg.className = "message";
+    msg.innerText = b[1];
+    msg.style.left = bal.style.left;
+    msg.style.top = bal.style.top;
+    area.appendChild(msg);
+
+    popped++;
+    if(popped === 9){
+      document.getElementById("nextBtn").style.display = "block";
+    }
+  };
+
+  area.appendChild(bal);
+});
+/* ========= PAGE 3 VIDEO BUTTON LOGIC ========= */
+const crackers = document.querySelectorAll(".cracker");
+const videoBox = document.getElementById("sky-video-box");
+
+crackers.forEach(cracker => {
+  cracker.addEventListener("click", () => {
+    const src = cracker.dataset.video;
+
+    // burst animation
+    cracker.classList.add("burst");
+    setTimeout(() => cracker.classList.remove("burst"), 350);
+
+    // clear previous video
+    videoBox.innerHTML = "";
+
+    // create video
+    const video = document.createElement("video");
+    video.src = src;
+    video.autoplay = true;
+    video.controls = true;     // important for long videos
+    video.muted = false;       // audio ON
+    video.volume = 0.8;
+    video.playsInline = true;
+
+    // close button
+    const close = document.createElement("div");
+    close.innerText = "✕";
+    close.style.position = "absolute";
+    close.style.top = "-10px";
+    close.style.right = "-10px";
+    close.style.cursor = "pointer";
+    close.style.background = "#ff8fb8";
+    close.style.color = "#fff";
+    close.style.borderRadius = "50%";
+    close.style.padding = "4px 8px";
+    close.style.fontSize = "12px";
+
+    close.onclick = () => videoBox.innerHTML = "";
+
+    videoBox.appendChild(video);
+    videoBox.appendChild(close);
+  });
+});
+
+</script>
+
+</body>
+</html>
+
+
+
